@@ -28,7 +28,7 @@
 <li>有几十个基础游戏玩法系统模块提供组装使用（v1.3.0提供）；</li>
 </ul>
 <p align="left"><strong>框架介绍</strong></p>
-<p align="left"><a href="./9miao_files/123.jpg"><img class="alignnone  wp-image-40" alt="123" src="./9miao_files/123.jpg" width="601" height="441"></a></p>
+<p align="left"><a href="http://firefly.9miao.com/wp-content/uploads/2013/08/123.jpg"><img class="alignnone  wp-image-40" alt="123" src="./9miao_files/123.jpg" width="601" height="441"></a></p>
 <ul>
 <li>management, firefly 是个多进程、分布式的游戏服务器。因此各游戏server(进程)的管理和扩展是firefly很重要的部分，框架通过抽象使服务器的扩展非常容易。</li>
 <li>Network，客户端连接通信、server进程间的通信等构成了整个游戏框架的脉络，所有游戏流程都构建在这个脉络上。与客户端的通信采用的是请求/回应式的，所以受到的客户端的请求，服务端都会给出相应的回应，服务端也能主动的推送，广播给客户端消息。这些请求是基于指令号的请求。（例如定义101为登陆指令）server进程之间的通信时采用的异步回调的方式，这样就减少了的进程间通过网络通信中的时间消耗。</li>
@@ -36,7 +36,7 @@
 </ul>
 <p align="left"><strong>框架思路</strong><b></b></p>
 <p align="left"><b>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</b>一个最基本的服务器就是一个在不停运行着的应用程序。在分布式游戏服务器中，我们需要的服务器具有的功能有，监听客户端的连接，监听其他服务进程的消息，连接其他的服务进程，有些需要有数据库连接和缓存服务。如下图</p>
-<p align="left">&nbsp;<a href="./9miao_files/234.jpg"><img class="alignnone size-full wp-image-41" alt="234" src="./9miao_files/234.jpg" width="552" height="401"></a></p>
+<p align="left">&nbsp;<a href="http://firefly.9miao.com/wp-content/uploads/2013/08/234.jpg"><img class="alignnone size-full wp-image-41" alt="234" src="./9miao_files/234.jpg" width="552" height="401"></a></p>
 <p align="left">net connect 做客户端连接，root监听其他服务进程消息，node连接其他服务进程，db数据库，cache缓存。是否需要监听客户端连接，是否监听其他服务进程消息等这是都是可以在config.json中进行配置。包括各个服务器的名称以及各个服务器之间的连接关系。这样就可以自定义出自己的分布式架构。</p>
 			</div><!-- .entry-content -->
 
