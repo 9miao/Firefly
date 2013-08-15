@@ -49,21 +49,6 @@
 
 	</div><!-- #main -->
 
-	<footer id="colophon" role="contentinfo">
-
-			
-
-			<div id="site-generator">
-
-
-								
-			</div>
-	</footer><!-- #colophon -->
-</div><!-- #page -->
-
-<script type="text/javascript">
-var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2721c3c016dc1e1ce3c3ca486d58bcf3' type='text/javascript'%3E%3C/script%3E"));
-</script><script src="./9miao_files/h.js" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=2721c3c016dc1e1ce3c3ca486d58bcf3" target="_blank"><img border="0" src="./9miao_files/21.gif" width="20" height="20"></a>
+</div>
 
 </body>
