@@ -12,7 +12,7 @@
 					
 <article id="post-31" class="post-31 post type-post status-publish format-standard hentry category-firefly">
 	<header class="entry-header">
-		<h1 class="entry-title">Firefly Game Server Framework是什么？</h1>
+		<h1 class="entry-title">What's Firefly Game Server Framework？</h1>
 
 			</header><!-- .entry-header -->
 
