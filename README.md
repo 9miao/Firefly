@@ -17,27 +17,27 @@
 			</header><!-- .entry-header -->
 
 	<div class="entry-content">
-		<p align="left">&nbsp; &nbsp; &nbsp; &nbsp; Firefly是免费、开源、稳定、快速扩展、能 “热更新”的分布式游戏服务器端框架，采用Python编写，基于Twisted框架开发。Firefly的设计理念是“让开发者专注前端”，它包括了开发框架和数据库缓存服务等各种游戏服务器基础服务，节省大量游戏开发的工作时间，真正做到让使用者把精力放在游戏玩法逻辑上。用它可以搭建自定义的分布式架构，只需要修改相应的配置文件即可。</p>
-<p align="left"><strong>优势特性</strong><b></b></p>
+		<p align="left">&nbsp; &nbsp; &nbsp; &nbsp; Firefly is a free, open source, stable and rapid expansion, to "hot update" distributed game server side framework。Written in Python, based on the Twisted framework development。Firefly's design philosophy is to "let developers focus on front-end"，It includes a development framework and database caching services, and other basic services game servers，Save a lot of game developers working hours，Truly allows the user to focus on gameplay logic。It can be used to build a custom distributed architecture, only need to modify the configuration file to the appropriate。</p>
+<p align="left"><strong>Benefits Features</strong><b></b></p>
 <ul>
-<li>采用单线程多进程架构，支持自定义的分布式架构；</li>
-<li>方便的服务器扩展机制，可快速扩展服务器类型和数量；</li>
-<li>与客户端采用TCP长连接，无需考虑粘包等问题；</li>
-<li>封装数据缓存服务；</li>
-<li>可实现实时热更新数据以及游戏逻辑，客户端玩家无感觉；</li>
-<li>有几十个基础游戏玩法系统模块提供组装使用（v1.3.0提供）；</li>
+<li>Single-threaded multi-process architecture, distributed architecture supports custom；</li>
+<li>Convenient server extension mechanism that can rapidly expand the server type and quantity；</li>
+<li>Long with the client using TCP connection, without considering issues such as stick package；</li>
+<li>Packaging Data Cache Service；</li>
+<li>Can achieve real-time thermal profile data as well as game logic, the client player without feeling；</li>
+<li>There are dozens of basic gameplay system modules assembled using (v1.3.0 available)；</li>
 </ul>
-<p align="left"><strong>框架介绍</strong></p>
+<p align="left"><strong>Frameworks introduced</strong></p>
 <p align="left"><a href="http://firefly.9miao.com/wp-content/uploads/2013/08/123.jpg"><img class="alignnone  wp-image-40" alt="123" src="./9miao_files/123.jpg" width="601" height="441"></a></p>
 <ul>
-<li>management, firefly 是个多进程、分布式的游戏服务器。因此各游戏server(进程)的管理和扩展是firefly很重要的部分，框架通过抽象使服务器的扩展非常容易。</li>
-<li>Network，客户端连接通信、server进程间的通信等构成了整个游戏框架的脉络，所有游戏流程都构建在这个脉络上。与客户端的通信采用的是请求/回应式的，所以受到的客户端的请求，服务端都会给出相应的回应，服务端也能主动的推送，广播给客户端消息。这些请求是基于指令号的请求。（例如定义101为登陆指令）server进程之间的通信时采用的异步回调的方式，这样就减少了的进程间通过网络通信中的时间消耗。</li>
-<li>Data, 数据处理是网游的重要部分。在网游有大量的数据需要存储，需要更新，这使得数据库的读写效率成为服务器的最大的性能瓶颈。firefly的db处理能够将数据库表中的数据缓存到memcache中并能以对象的形式进行调用相应的对象方法对数据进行操作。可以在不同的进程中通过实例化相同的名称的缓存实例，得到同步的数据。并能将缓存对象中的数据写回数据库中。</li>
+<li>management, firefly is a multi-process, distributed game server。So each game server (process) management and extensions are firefly very important part of the framework by abstracting the server extensions very easy。</li>
+<li>Network，Client connects communications, server inter-process communication, etc. constitute the entire game framework in the context，All games in this context processes are built on。Communication with the client uses a request / response style, so by the client's request, the server will give the appropriate response，The server can also take the initiative to push the message broadcast to the client。These requests are based on a request instruction number。（Such as defining 101 for the landing instructions）communication between the server process using the asynchronous callback method, thus reducing the inter-process communication in the network time-consuming。</li>
+<li>Data, Data processing is an important part of online games。In online games have a lot of data needs to be stored, needs to be updated, which makes the database server to read and write efficiency become the biggest performance bottlenecks。firefly's db processing can be a database table data cache to memcache in the form of objects and are able to carry out the corresponding object method calls to manipulate data。In a different process by instantiating instances of the same name cache, the data are synchronized。Cache object and can write data back to the database。</li>
 </ul>
-<p align="left"><strong>框架思路</strong><b></b></p>
-<p align="left"><b>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</b>一个最基本的服务器就是一个在不停运行着的应用程序。在分布式游戏服务器中，我们需要的服务器具有的功能有，监听客户端的连接，监听其他服务进程的消息，连接其他的服务进程，有些需要有数据库连接和缓存服务。如下图</p>
+<p align="left"><strong>Framework for thinking</strong><b></b></p>
+<p align="left"><b>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</b>A basic server that is running a non-stop applications。In a distributed game server, we need to have a server function, listen for client connections, monitor other services processes messages to connect to other service process，Some require a database connection and caching services。As shown</p>
 <p align="left">&nbsp;<a href="http://firefly.9miao.com/wp-content/uploads/2013/08/234.jpg"><img class="alignnone size-full wp-image-41" alt="234" src="./9miao_files/234.jpg" width="552" height="401"></a></p>
-<p align="left">net connect 做客户端连接，root监听其他服务进程消息，node连接其他服务进程，db数据库，cache缓存。是否需要监听客户端连接，是否监听其他服务进程消息等这是都是可以在config.json中进行配置。包括各个服务器的名称以及各个服务器之间的连接关系。这样就可以自定义出自己的分布式架构。</p>
+<p align="left">net connect Handle client connections，Other news monitoring service process root，node to connect to other service process，db database，“cache” database，cache 。Do they need to listen for client connections, whether listening other service processes messages, etc. This is all can be configured in config.json,Including the name of the server as well as the various connections between each server。So you can customize their own distributed architecture。</p>
 			</div><!-- .entry-content -->
 
 </article><!-- #post-31 -->
