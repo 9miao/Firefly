@@ -2,9 +2,15 @@
 '''
 Created on 2012-7-10
 memcached client
-@author: lan
+@author: lan (www.9miao.com)
 '''
 import memcache
+
+class MemConnError(Exception): 
+    """
+    """
+    def __str__(self):
+        return "memcache connect error"
 
 class MemClient:
     '''memcached
@@ -23,6 +29,8 @@ class MemClient:
         self._hostname = hostname
         self._urls = urls
         self.connection = memcache.Client(self._urls,debug=0)
+        if not self.connection.set("__testkey__",1):
+            raise MemConnError()
         
     def produceKey(self,keyname):
         '''

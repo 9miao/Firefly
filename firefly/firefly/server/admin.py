@@ -2,7 +2,7 @@
 '''
 Created on 2013-8-12
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 from globalobject import GlobalObject,masterserviceHandle
 from twisted.internet import reactor

@@ -4,7 +4,7 @@ Created on 2012-7-10
 memcached 关系对象
 通过key键的名称前缀来建立
 各个key-value 直接的关系
-@author: lan
+@author: lan (www.9miao.com)
 '''
 
 class MemObject:

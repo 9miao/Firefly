@@ -2,7 +2,7 @@
 '''
 Created on 2011-10-12
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 import time
 

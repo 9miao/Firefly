@@ -2,7 +2,7 @@
 '''
 Created on 2013-8-8
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 from firefly import management
 import sys

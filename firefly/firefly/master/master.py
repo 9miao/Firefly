@@ -2,7 +2,7 @@
 '''
 Created on 2013-8-2
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 import subprocess,json,sys
 from twisted.internet import reactor
@@ -10,7 +10,7 @@ from firefly.utils import  services
 from firefly.distributed.root import PBRoot,BilateralFactory
 from firefly.server.globalobject import GlobalObject
 from twisted.web import vhost
-from twisted.web.server import Site
+from firefly.web.delayrequest import DelaySite
 from twisted.python import log
 from firefly.server.logobj import loogoo
 
@@ -51,7 +51,7 @@ class Master:
         log.startLogging(sys.stdout)
         import webapp
         import rootapp
-        reactor.listenTCP(webport, Site(self.webroot))
+        reactor.listenTCP(webport, DelaySite(self.webroot))
         reactor.listenTCP(rootport, BilateralFactory(self.root))
         
     def start(self):

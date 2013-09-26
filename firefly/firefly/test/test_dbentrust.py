@@ -2,7 +2,7 @@
 '''
 Created on 2013-7-31
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 from dbentrust.dbpool import dbpool
 from dbentrust.madminanager import MAdminManager
@@ -28,7 +28,7 @@ if __name__=="__main__":
     tablename = "tb_user"#
 
     mmanager = MAdminManager()
-    mclient.connect(['127.0.0.1:11211'], 'localhost')
+    mclient.connect(['127.0.0.1:11212'], 'localhost')
     mclient.set('a', 1)
     print mclient.get('a')
 

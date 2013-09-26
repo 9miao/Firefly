@@ -2,7 +2,7 @@
 '''
 Created on 2011-9-20
 登陆服务器协议
-@author: lan
+@author: lan (www.9miao.com)
 '''
 from twisted.internet import protocol,reactor
 from twisted.python import log

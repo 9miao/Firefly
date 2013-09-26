@@ -2,7 +2,7 @@
 '''
 Created on 2013-5-8
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 
 from dbpool import dbpool

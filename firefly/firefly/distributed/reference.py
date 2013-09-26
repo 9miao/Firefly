@@ -2,7 +2,7 @@
 '''
 Created on 2011-10-14
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 from twisted.spread import pb
 from firefly.utils.services import Service

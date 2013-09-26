@@ -2,7 +2,7 @@
 '''
 Created on 2011-10-17
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 import services
 from distributed.root import PBRoot,BilateralFactory

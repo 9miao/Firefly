@@ -2,7 +2,7 @@
 '''
 Created on 2013-8-7
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 from twisted.web import resource
 from twisted.internet import reactor
@@ -32,7 +32,7 @@ class stop(resource.Resource):
 
 @masterwebHandle
 class reloadmodule(resource.Resource):
-    '''stop service'''
+    '''reload module'''
     
     def render(self, request):
         '''

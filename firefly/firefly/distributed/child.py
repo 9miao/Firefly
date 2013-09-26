@@ -2,16 +2,13 @@
 '''
 Created on 2011-10-14
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 class Child(object):
     '''子节点对象'''
     
     def __init__(self,cid,name):
         '''初始化子节点对象
-        @param id: int 子节点的id
-        @param addr: int 字节点都端口号
-        @param _transport: 子节点的调用通道
         '''
         self._id = cid
         self._name = name

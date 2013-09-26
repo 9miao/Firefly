@@ -2,7 +2,7 @@
 '''
 Created on 2013-8-6
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 import json,sys
 from firefly.server.server import FFServer

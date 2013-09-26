@@ -2,7 +2,7 @@
 '''
 Created on 2011-10-3
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 import sys,os
 

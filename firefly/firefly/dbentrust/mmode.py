@@ -2,7 +2,7 @@
 '''
 Created on 2013-5-8
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 from memclient import mclient
 from memobject import MemObject
@@ -18,10 +18,21 @@ def _insert(args):
     mm.insert()
     return pk
 
+class PKValueError(ValueError): 
+    """
+    """
+    def __init__(self, data):
+        ValueError.__init__(self)
+        self.data = data
+    def __str__(self):
+        return "new record has no 'PK': %s" % (self.data)
+
 class MMode(MemObject):
     """内存数据模型
     """
     def __init__(self, name,pk,data={}):
+        """
+        """
         MemObject.__init__(self, name, mclient)
         self._state = 0#对象的状态 0未变更  1新建 2更新 3删除
         self._pk = pk
@@ -106,9 +117,10 @@ class MMode(MemObject):
         """
         ntime = time.time()
         objtime = MemObject.get(self, '_time')
-        self.syncDB()
         if ntime  -objtime>=timeout and timeout:
             self.mdelete()
+        else:
+            self.syncDB()
         
         
 class MFKMode(MemObject):
@@ -136,34 +148,18 @@ class MAdmin(MemObject):
     def load(self):
         '''读取数据到数据库中
         '''
-        pkname = self._pk
         mmname = self._name
         recordlist = util.ReadDataFromDB(mmname)
-        _recordlist = [(record,pkname,mmname,MMode) for record in recordlist]
         for record in recordlist:
             pk = record[self._pk]
             mm = MMode(self._name+':%s'%pk,self._pk,data=record)
             mm.insert()
-        
+    
     @property
     def madmininfo(self):
         keys = self.__dict__.keys()
         info = self.get_multi(keys)
         return info
-        
-    def mfilter(self,kw):
-        """查找符合的对象(效率低下，不推荐使用)
-        """
-        objects = []
-        keys = []
-        data = self._client.get_multi(keys)
-        for _name,_item in data.items():
-            if set(kw.items()).issubset(_item.items()):
-                pk = _item[self._pk]
-                mm = MMode(self._name+':%s'%pk,self._pk,data=_item)
-                if mm.IsEffective():
-                    objects.append(mm)
-        return objects
     
     def getAllPkByFk(self,fk):
         '''根据外键获取主键列表
@@ -280,16 +276,17 @@ class MAdmin(MemObject):
     def new(self,data):
         """创建一个新的对象
         """
-        madmininfo = self.madmininfo
-        incrkey = madmininfo.get('_incrkey')
+        incrkey = self._incrkey
         if incrkey:
             incrvalue = self.incr('_incrvalue', 1)
             data[incrkey] = incrvalue
             pk = data.get(self._pk)
+            if pk is None:
+                raise PKValueError(data)
             mm = MMode(self._name+':%s'%pk,self._pk,data=data)
             setattr(mm,incrkey,pk)
         else:
-            pk = data.get(madmininfo.get('_pk'))
+            pk = data.get(self._pk)
             mm = MMode(self._name+':%s'%pk,self._pk,data=data)
         if self._fk:
             fk = data.get(self._fk,0)

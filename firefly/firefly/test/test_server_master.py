@@ -2,7 +2,7 @@
 '''
 Created on 2013-8-2
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 import os
 if os.name!='nt':

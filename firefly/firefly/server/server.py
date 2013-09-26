@@ -2,7 +2,7 @@
 '''
 Created on 2013-8-2
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 from firefly.netconnect.protoc import LiberateFactory
 from firefly.distributed.root import PBRoot,BilateralFactory

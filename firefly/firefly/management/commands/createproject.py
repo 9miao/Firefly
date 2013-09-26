@@ -2,7 +2,7 @@
 '''
 Created on 2013-8-8
 
-@author: lan
+@author: lan (www.9miao.com)
 '''
 import sys,os
 startmasterfile =['#coding:utf8\n', '\n', 'import os\n', "if os.name!='nt' and os.name!='posix':\n", '    from twisted.internet import epollreactor\n', '    epollreactor.install()\n', '\n', 'if __name__=="__main__":\n', '    from firefly.master.master import Master\n', '    master = Master()\n', "    master.config('config.json','appmain.py')\n", '    master.start()\n', '    \n', '    ']
