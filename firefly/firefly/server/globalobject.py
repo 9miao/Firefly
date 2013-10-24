@@ -41,10 +41,25 @@ def rootserviceHandle(target):
     """
     GlobalObject().root.service.mapTarget(target)
     
-def webserviceHandle(cls):
+class webserviceHandle:
+    """这是一个修饰符对象
     """
-    """
-    GlobalObject().webroot.putChild(cls.__name__, cls())
+    
+    def __init__(self,url=None):
+        """
+        @param url: str http 访问的路径
+        """
+        self._url = url
+        
+    def __call__(self,cls):
+        """
+        """
+        if self._url:
+            GlobalObject().webroot.putChild(self._url, cls())
+        else:
+            GlobalObject().webroot.putChild(cls.__name__, cls())
+    
+
     
 class remoteserviceHandle:
     """

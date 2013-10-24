@@ -27,6 +27,7 @@ class RemoteObject(object):
         self._name = name
         self._factory = pb.PBClientFactory()
         self._reference = ProxyReference()
+        self._addr = None
         
     def setName(self,name):
         '''设置节点的名称'''
@@ -38,8 +39,13 @@ class RemoteObject(object):
         
     def connect(self,addr):
         '''初始化远程调用对象'''
+        self._addr = addr
         reactor.connectTCP(addr[0], addr[1], self._factory)
         self.takeProxy()
+        
+    def reconnect(self):
+        '''重新连接'''
+        self.connect(self._addr)
         
     def addServiceChannel(self,service):
         '''设置引用对象'''

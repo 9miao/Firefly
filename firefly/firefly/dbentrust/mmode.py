@@ -9,6 +9,13 @@ from memobject import MemObject
 import util
 import time
 
+MMODE_STATE_ORI = 0     #未变更
+MMODE_STATE_NEW = 1     #创建
+MMODE_STATE_UPDATE = 2  #更新
+MMODE_STATE_DEL = 3     #删除
+
+
+
 TIMEOUT = 1800
 
 def _insert(args):
@@ -34,7 +41,7 @@ class MMode(MemObject):
         """
         """
         MemObject.__init__(self, name, mclient)
-        self._state = 0#对象的状态 0未变更  1新建 2更新 3删除
+        self._state = MMODE_STATE_ORI#对象的状态 0未变更  1新建 2更新 3删除
         self._pk = pk
         self.data = data
         self._time = time.time()
@@ -43,20 +50,20 @@ class MMode(MemObject):
         data = self.get_multi(['data','_state'])
         ntime = time.time()
         data[key] = values
-        if data.get('_state')==1:
+        if data.get('_state')==MMODE_STATE_NEW:
             props = {'data':data.get('data'),'_time':ntime}
         else:
-            props = {'_state':2,'data':data.get('data'),'_time':ntime}
+            props = {'_state':MMODE_STATE_UPDATE,'data':data.get('data'),'_time':ntime}
         return MemObject.update_multi(self,props)
     
     def update_multi(self, mapping):
         ntime = time.time()
         data = self.get_multi(['data','_state'])
         data['data'].update(mapping)
-        if data.get('_state')==1:
+        if data.get('_state')==MMODE_STATE_NEW:
             props = {'data':data.get('data'),'_time':ntime}
         else:
-            props = {'_state':2,'data':data.get('data'),'_time':ntime}
+            props = {'_state':MMODE_STATE_UPDATE,'data':data.get('data'),'_time':ntime}
         return MemObject.update_multi(self, props)
     
     def get(self, key):
@@ -72,7 +79,7 @@ class MMode(MemObject):
     def delete(self):
         '''删除对象
         '''
-        return MemObject.update(self,'_state',3)
+        return MemObject.update(self,'_state',MMODE_STATE_DEL)
     
     def mdelete(self):
         """清理对象
@@ -83,7 +90,7 @@ class MMode(MemObject):
     def IsEffective(self):
         '''检测对象是否有效
         '''
-        if self.get('_state')==3:
+        if self.get('_state')==MMODE_STATE_DEL:
             return False
         return True
         
@@ -92,13 +99,13 @@ class MMode(MemObject):
         """
         state = self.get('_state')
         tablename = self._name.split(':')[0]
-        if state==0:
+        if state==MMODE_STATE_ORI:
             return
-        elif state==1:
+        elif state==MMODE_STATE_NEW:
             props = self.get('data')
             pk = self.get('_pk')
             result = util.InsertIntoDB(tablename, props)
-        elif state==2:
+        elif state==MMODE_STATE_UPDATE:
             props = self.get('data')
             pk = self.get('_pk')
             prere = {pk:props.get(pk)}
@@ -110,7 +117,7 @@ class MMode(MemObject):
             prere = {pk:props.get(pk)}
             result = util.DeleteFromDB(tablename,prere)
         if result:
-            MemObject.update(self,'_state', 0)
+            MemObject.update(self,'_state', MMODE_STATE_ORI)
             
     def checkSync(self,timeout=TIMEOUT):
         """检测同步
@@ -297,7 +304,7 @@ class MAdmin(MemObject):
                 pklist = self.getAllPkByFk(fk)
             pklist.append(pk)
             fkmm.update('pklist', pklist)
-        setattr(mm,'_state',1)
+        setattr(mm,'_state',MMODE_STATE_NEW)
         mm.insert()
         return mm
         

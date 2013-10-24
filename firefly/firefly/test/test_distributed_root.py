@@ -4,8 +4,8 @@ Created on 2011-10-17
 
 @author: lan (www.9miao.com)
 '''
-import services
-from distributed.root import PBRoot,BilateralFactory
+from firefly.utils import  services
+from firefly.distributed.root import PBRoot,BilateralFactory
 from twisted.internet import reactor
 from twisted.python import log
 import sys
@@ -38,6 +38,6 @@ def printData2(data,data1):
     return data
 
 if __name__=='__main__':
-    reactor.listenTCP(8800, BilateralFactory(root))
+    reactor.listenTCP(1000, BilateralFactory(root))
     reactor.callLater(5,root.callChildByName,'test_node','printOK','asdfawefasdf')
     reactor.run()

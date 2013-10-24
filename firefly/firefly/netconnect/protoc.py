@@ -64,11 +64,11 @@ class LiberateProtocol(protocol.Protocol):
                 request = self.buff[lenght:lenght+rlenght]
                 if request.__len__()< rlenght:
                     log.msg('some data lose')
-                    continue
+                    break
                 self.buff = self.buff[lenght+rlenght:]
                 d = self.factory.doDataReceived(self,command,request)
                 if not d:
-                    continue
+                    break
                 d.addCallback(self.safeToWriteData,command)
                 d.addErrback(DefferedErrorHandle)
 

@@ -5,6 +5,8 @@ Created on 2013-8-2
 @author: lan (www.9miao.com)
 '''
 from firefly.netconnect.protoc import LiberateFactory
+from twisted.web import vhost
+from firefly.web.delayrequest import DelaySite
 from firefly.distributed.root import PBRoot,BilateralFactory
 from firefly.distributed.node import RemoteObject
 from firefly.dbentrust.dbpool import dbpool
@@ -32,6 +34,7 @@ class FFServer:
         '''
         self.netfactory = None#net前端
         self.root = None#分布式root节点
+        self.webroot = None#http服务
         self.remote = {}#remote节点
         self.master_remote = None
         self.db = None
@@ -42,6 +45,7 @@ class FFServer:
         '''配置服务器
         '''
         netport = config.get('netport')#客户端连接
+        webport = config.get('webport')#http连接
         rootport = config.get('rootport')#root节点配置
         remoteportlist = config.get('remoteport',[])#remote节点配置列表
         servername = config.get('name')#服务器名称
@@ -64,6 +68,11 @@ class FFServer:
             netservice = services.CommandService("netservice")
             self.netfactory.addServiceChannel(netservice)
             reactor.listenTCP(netport,self.netfactory)
+            
+        if webport:
+            self.webroot = vhost.NameVirtualHost()
+            GlobalObject().webroot = self.webroot
+            reactor.listenTCP(webport, DelaySite(self.webroot))
             
         if rootport:
             self.root = PBRoot()
@@ -96,7 +105,7 @@ class FFServer:
         GlobalObject().config(netfactory = self.netfactory, root=self.root,
                     remote = self.remote)
         if app:
-            __import__(app)
+            reactor.callLater(0.1,__import__,app)
         if mreload:
             GlobalObject().reloadmodule = __import__(mreload)
         import admin

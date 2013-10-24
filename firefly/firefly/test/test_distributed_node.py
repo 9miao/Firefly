@@ -4,8 +4,8 @@ Created on 2011-10-17
 
 @author: lan (www.9miao.com)
 '''
-from utils import services
-from distributed.node import RemoteObject
+from firefly.utils import services
+from firefly.distributed.node import RemoteObject
 from twisted.internet import reactor
 from twisted.python import util,log
 import sys
