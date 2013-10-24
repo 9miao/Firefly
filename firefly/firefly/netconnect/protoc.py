@@ -68,7 +68,7 @@ class LiberateProtocol(protocol.Protocol):
                 self.buff = self.buff[lenght+rlenght:]
                 d = self.factory.doDataReceived(self,command,request)
                 if not d:
-                    break
+                    continue
                 d.addCallback(self.safeToWriteData,command)
                 d.addErrback(DefferedErrorHandle)
 
