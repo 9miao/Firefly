@@ -38,11 +38,11 @@ def serverstart():
     factory.addServiceChannel(service)
     reactor.callLater(10,factory.pushObject,111,'asdfe',[0])
     reactor.callLater(15,factory.loseConnection,0)
-    reactor.listenTCP(9090,factory)
+    reactor.listenTCP(1000,factory)
     reactor.run()
     
 @serviceHandle
-def echo_111(_conn,data):
+def echo_1(_conn,data):
     return "欢迎"
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ Created on 2013-8-1
 
 @author: lan (www.9miao.com)
 '''
+from twisted.python import log
 import struct
 
 class DataPackError(Exception):
@@ -64,6 +65,7 @@ class DataPackProtoc:
         try:
             ud = struct.unpack('!sssss3I',dpack)
         except DataPackError,de:
+            log.err(de)
             return {'result':False,'command':0,'lenght':0}
         HEAD_0 = ord(ud[0])
         HEAD_1 = ord(ud[1])

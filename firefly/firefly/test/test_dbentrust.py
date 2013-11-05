@@ -4,10 +4,10 @@ Created on 2013-7-31
 
 @author: lan (www.9miao.com)
 '''
-from dbentrust.dbpool import dbpool
-from dbentrust.madminanager import MAdminManager
-from dbentrust import mmode 
-from dbentrust.memclient import mclient
+from firefly.dbentrust.dbpool import dbpool
+from firefly.dbentrust.madminanager import MAdminManager
+from firefly.dbentrust import mmode 
+from firefly.dbentrust.memclient import mclient
 import time
 
 
