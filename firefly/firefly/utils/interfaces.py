@@ -13,6 +13,7 @@ class IDataPackProtoc(Interface):
     def getHeadLenght():
         """获取数据包的长度
         """
+        pass
         
     def unpack():
         '''解包

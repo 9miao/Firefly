@@ -40,15 +40,19 @@ class FFServer:
         self.db = None
         self.mem = None
         self.servername = None
+        self.remoteportlist = []
         
-    def config(self,config,dbconfig = None,memconfig = None,masterconf=None):
+    def config(self, config, servername=None, dbconfig=None,
+                memconfig=None, masterconf=None):
         '''配置服务器
         '''
+        GlobalObject().json_config = config
         netport = config.get('netport')#客户端连接
         webport = config.get('webport')#http连接
         rootport = config.get('rootport')#root节点配置
-        remoteportlist = config.get('remoteport',[])#remote节点配置列表
-        servername = config.get('name')#服务器名称
+        self.remoteportlist = config.get('remoteport',[])#remote节点配置列表
+        if not servername:
+            servername = config.get('name')#服务器名称
         logpath = config.get('log')#日志
         hasdb = config.get('db')#数据库连接
         hasmem = config.get('mem')#memcached连接
@@ -58,8 +62,9 @@ class FFServer:
         self.servername = servername
         if masterconf:
             masterport = masterconf.get('rootport')
+            masterhost = masterconf.get('roothost')
             self.master_remote = RemoteObject(servername)
-            addr = ('localhost',masterport)
+            addr = ('localhost',masterport) if not masterhost else (masterhost,masterport)
             self.master_remote.connect(addr)
             GlobalObject().masterremote = self.master_remote
             
@@ -80,12 +85,9 @@ class FFServer:
             self.root.addServiceChannel(rootservice)
             reactor.listenTCP(rootport, BilateralFactory(self.root))
             
-        for cnf in remoteportlist:
+        for cnf in self.remoteportlist:
             rname = cnf.get('rootname')
-            rport = cnf.get('rootport')
-            self.remote[rname] = RemoteObject(servername)
-            addr = ('localhost',rport)
-            self.remote[rname].connect(addr)
+            self.remote[rname] = RemoteObject(self.servername)
             
         if hasdb and dbconfig:
             log.msg(str(dbconfig))
@@ -105,10 +107,25 @@ class FFServer:
         GlobalObject().config(netfactory = self.netfactory, root=self.root,
                     remote = self.remote)
         if app:
-            reactor.callLater(0.1,__import__,app)
+            __import__(app)
         if mreload:
             GlobalObject().reloadmodule = __import__(mreload)
+        GlobalObject().remote_connect = self.remote_connect
         import admin
+        
+    def remote_connect(self, rname, rhost):
+        """
+        """
+        for cnf in self.remoteportlist:
+            _rname = cnf.get('rootname')
+            if rname == _rname:
+                rport = cnf.get('rootport')
+                if not rhost:
+                    addr = ('localhost',rport)
+                else:
+                    addr = (rhost,rport)
+                self.remote[rname].connect(addr)
+                break
         
     def start(self):
         '''启动服务器

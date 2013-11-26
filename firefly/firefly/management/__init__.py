@@ -7,6 +7,11 @@ Created on 2013-8-8
 from firefly.management import commands 
 import sys
 
+class CommandError(Exception): 
+    """
+    """
+    def __str__(self):
+        return "command error"
 
 class Command:
     
@@ -27,7 +32,7 @@ def execute_commands(*args):
     '''
     '''
     if len(args)<2:
-        sys.stdout.write("command error")
+        raise CommandError()
     subcommand = args[1]
     comm = Command(subcommand,*tuple(args[2:]))
     comm.execute()

@@ -1,6 +1,6 @@
 #coding:utf8
 '''
-Created on 2011-10-14
+Created on 2013-8-14
 
 @author: lan (www.9miao.com)
 '''
@@ -13,7 +13,6 @@ class ProxyReference(pb.Referenceable):
     
     def __init__(self):
         '''初始化'''
-        pb.Referenceable()
         self._service = Service('proxy')
         
     def addService(self,service):

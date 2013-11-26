@@ -11,9 +11,16 @@ def execute(*args):
     """
     if not args:
         masterport =9998
+        hostname = "localhost"
     else:
-        masterport = int(args[0])
-    url = "http://localhost:%s/stop"%masterport
+        if len(args)>1:
+            hostname = args[0]
+            masterport = int(args[1])
+        else:
+            hostname = "localhost"
+            masterport = int(args[0])
+        
+    url = "http://%s:%s/stop"%(hostname, masterport)
     try:
         response = urllib.urlopen(url)
     except:

@@ -43,6 +43,8 @@ def serverstart():
     
 @serviceHandle
 def echo_1(_conn,data):
+    addr = _conn.transport.client
+    print addr
     return "欢迎"
 
 if __name__ == "__main__":

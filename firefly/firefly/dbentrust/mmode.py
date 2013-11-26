@@ -49,12 +49,12 @@ class MMode(MemObject):
     def update(self, key, values):
         data = self.get_multi(['data','_state'])
         ntime = time.time()
-        data[key] = values
+        data['data'].update({key:values})
         if data.get('_state')==MMODE_STATE_NEW:
             props = {'data':data.get('data'),'_time':ntime}
         else:
             props = {'_state':MMODE_STATE_UPDATE,'data':data.get('data'),'_time':ntime}
-        return MemObject.update_multi(self,props)
+        return MemObject.update_multi(self, props)
     
     def update_multi(self, mapping):
         ntime = time.time()
@@ -286,7 +286,7 @@ class MAdmin(MemObject):
         incrkey = self._incrkey
         if incrkey:
             incrvalue = self.incr('_incrvalue', 1)
-            data[incrkey] = incrvalue
+            data[incrkey] = incrvalue - 1 
             pk = data.get(self._pk)
             if pk is None:
                 raise PKValueError(data)

@@ -16,7 +16,15 @@ from firefly.server.logobj import loogoo
 
 reactor = reactor
 
+MULTI_SERVER_MODE = 1
+SINGLE_SERVER_MODE = 2
+MASTER_SERVER_MODE = 3
+
+
+
 class Master:
+    """
+    """
     
     def __init__(self):
         """
@@ -31,10 +39,12 @@ class Master:
         """
         self.configpath = configpath
         self.mainpath = mainpath
-        self.masterapp()
         
     def masterapp(self):
+        """
+        """
         config = json.load(open(self.configpath,'r'))
+        GlobalObject().json_config = config
         mastercnf = config.get('master')
         rootport = mastercnf.get('rootport')
         webport = mastercnf.get('webport')
@@ -57,10 +67,32 @@ class Master:
     def start(self):
         '''
         '''
-        config = json.load(open(self.configpath,'r'))
-        sersconf = config.get('servers')
-        for sername in sersconf.keys():
+        sys_args = sys.argv
+        if len(sys_args)>2 and sys_args[1] == "single":
+            server_name = sys_args[2]
+            if server_name == "master":
+                mode = MASTER_SERVER_MODE
+            else:
+                mode = SINGLE_SERVER_MODE
+        else:
+            mode = MULTI_SERVER_MODE
+            server_name = ""
+            
+        if mode == MULTI_SERVER_MODE:
+            self.masterapp()
+            config = json.load(open(self.configpath,'r'))
+            sersconf = config.get('servers')
+            for sername in sersconf.keys():
+                cmds = 'python %s %s %s'%(self.mainpath,sername,self.configpath)
+                subprocess.Popen(cmds,shell=True)
+            reactor.run()
+        elif mode == SINGLE_SERVER_MODE:
+            config = json.load(open(self.configpath,'r'))
+            sername = server_name
             cmds = 'python %s %s %s'%(self.mainpath,sername,self.configpath)
             subprocess.Popen(cmds,shell=True)
-        reactor.run()
+        else:
+            self.masterapp()
+            reactor.run()
+            
             

@@ -1,6 +1,6 @@
 #coding:utf8
 '''
-Created on 2011-10-14
+Created on 2013-8-14
 分布式根节点
 @author: lan (www.9miao.com)
 '''
@@ -14,12 +14,15 @@ class BilateralBroker(pb.Broker):
     def connectionLost(self, reason):
         clientID = self.transport.sessionno
         log.msg("node [%d] lose"%clientID)
-        self.factory.root.dropChildByID(clientID)
+        self.factory.root.dropChildSessionId(clientID)
         pb.Broker.connectionLost(self, reason)
+        
+    
         
 class BilateralFactory(pb.PBServerFactory):
     
     protocol = BilateralBroker
+    
     
 
 class PBRoot(pb.Root):
@@ -28,7 +31,6 @@ class PBRoot(pb.Root):
     def __init__(self,dnsmanager = ChildsManager()):
         '''初始化根节点
         '''
-        pb.Root()
         self.service = None
         self.childsmanager = dnsmanager
     
@@ -46,6 +48,12 @@ class PBRoot(pb.Root):
         child = Child(name,name)
         self.childsmanager.addChild(child)
         child.setTransport(transport)
+        self.doChildConnect(name, transport)
+        
+    def doChildConnect(self,name,transport):
+        """当node节点连接时的处理
+        """
+        pass
         
     def remote_callTarget(self,command,*args,**kw):
         '''远程调用方法
@@ -61,7 +69,20 @@ class PBRoot(pb.Root):
         
     def dropChildByID(self,childId):
         '''删除子节点记录'''
+        self.doChildLostConnect(childId)
         self.childsmanager.dropChildByID(childId)
+        
+    def dropChildSessionId(self, session_id):
+        '''删除子节点记录'''
+        child = self.childsmanager.getChildBYSessionId(session_id)
+        child_id = child._id
+        self.doChildLostConnect(child_id)
+        self.childsmanager.dropChildByID(child_id)
+        
+    def doChildLostConnect(self,childId):
+        """当node节点连接时的处理
+        """
+        pass
     
     def callChild(self,key,*args,**kw):
         '''调用子节点的接口

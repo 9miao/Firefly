@@ -1,6 +1,6 @@
 #coding:utf8
 '''
-Created on 2012-7-10
+Created on 2013-7-10
 memcached client
 @author: lan (www.9miao.com)
 '''
@@ -50,7 +50,10 @@ class MemClient:
         '''
         '''
         keynamelist = [self.produceKey(keyname) for keyname in keys]
-        return self.connection.get_multi(keynamelist)
+        olddict = self.connection.get_multi(keynamelist)
+        newdict = dict(zip([keyname.split(':')[-1] for keyname in olddict.keys()],
+                              olddict.values()))
+        return newdict
         
     def set(self,keyname,value):
         '''

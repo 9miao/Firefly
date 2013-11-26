@@ -13,6 +13,8 @@ reactor = reactor
 
 @masterserviceHandle
 def serverStop():
+    """
+    """
     log.msg('stop')
     if GlobalObject().stophandler:
         GlobalObject().stophandler()
@@ -21,10 +23,16 @@ def serverStop():
 
 @masterserviceHandle
 def sreload():
+    """
+    """
     log.msg('reload')
     if GlobalObject().reloadmodule:
         reload(GlobalObject().reloadmodule)
     return True
 
-
+@masterserviceHandle
+def remote_connect(rname, rhost):
+    """
+    """
+    GlobalObject().remote_connect(rname, rhost)
 

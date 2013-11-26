@@ -10,22 +10,40 @@ from MySQLdb.cursors import DictCursor
 from numbers import Number
 from twisted.python import log
 
+
 def forEachPlusInsertProps(tablename,props):
     assert type(props) == dict
     pkeysstr = str(tuple(props.keys())).replace('\'','`')
-    pvaluesstr = ["%s,"%val if isinstance(val,Number) else "'%s',"%val for val in props.values()]
+    pvaluesstr = ["%s,"%val if isinstance(val,Number) else 
+                  "'%s',"%str(val).replace("'", "\\'") for val in props.values()]
     pvaluesstr = ''.join(pvaluesstr)[:-1]
     sqlstr = """INSERT INTO `%s` %s values (%s);"""%(tablename,pkeysstr,pvaluesstr)
     return sqlstr
 
 def FormatCondition(props):
+    """生成查询条件字符串
+    """
+    items = props.items()
+    itemstrlist = []
+    for _item in items:
+        if isinstance(_item[1],Number):
+            sqlstr = " `%s`=%s AND"%_item
+        else:
+            sqlstr = " `%s`='%s' AND "%(_item[0],str(_item[1]).replace("'", "\\'"))
+        itemstrlist.append(sqlstr)
+    sqlstr = ''.join(itemstrlist)
+    return sqlstr[:-4]
+
+def FormatUpdateStr(props):
+    """生成更新语句
+    """
     items = props.items()
     itemstrlist = []
     for _item in items:
         if isinstance(_item[1],Number):
             sqlstr = " `%s`=%s,"%_item
         else:
-            sqlstr = " `%s`='%s',"%(_item[0],_item[1])
+            sqlstr = " `%s`='%s',"%(_item[0],str(_item[1]).replace("'", "\\'"))
         itemstrlist.append(sqlstr)
     sqlstr = ''.join(itemstrlist)
     return sqlstr[:-1]
@@ -33,8 +51,8 @@ def FormatCondition(props):
 def forEachUpdateProps(tablename,props,prere):
     '''遍历所要修改的属性，以生成sql语句'''
     assert type(props) == dict
-    pro = FormatCondition(props)
-    pre = FormatCondition(prere).replace(',',' AND')
+    pro = FormatUpdateStr(props)
+    pre = FormatCondition(prere)
     sqlstr = """UPDATE `%s` SET %s WHERE %s;"""%(tablename,pro,pre) 
     return sqlstr
 

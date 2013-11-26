@@ -1,6 +1,6 @@
 #coding:utf8
 '''
-Created on 2011-10-14
+Created on 2013-8-14
 
 @author: lan (www.9miao.com)
 '''
@@ -41,6 +41,10 @@ class _ChildsManager(Interface):
         '''删除一个child 节点
         @param childId: Child ID 
         '''
+        
+    def dropChildSessionId(self, session_id):
+        """根据session_id删除child节点
+        """
 
 class ChildsManager(object):
     '''子节点管理器'''
@@ -109,7 +113,12 @@ class ChildsManager(object):
             log.err("child %s doesn't exists"%childname)
             return
         return child.callbackChild(*args,**kw)
-        
     
-        
+    def getChildBYSessionId(self, session_id):
+        """根据sessionID获取child节点信息
+        """
+        for child in self._childs.values():
+            if child._transport.broker.transport.sessionno == session_id:
+                return child
+
         

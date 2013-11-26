@@ -19,6 +19,9 @@ class GlobalObject:
         self.webroot = None
         self.masterremote = None
         self.reloadmodule = None
+        self.remote_connect = None
+        self.json_config = {}
+        self.remote_map = {}
         
     def config(self,netfactory=None,root = None,remote=None,db=None):
         self.netfactory = netfactory
