@@ -75,6 +75,8 @@ class PBRoot(pb.Root):
     def dropChildSessionId(self, session_id):
         '''删除子节点记录'''
         child = self.childsmanager.getChildBYSessionId(session_id)
+        if not child:
+            return
         child_id = child._id
         self.doChildLostConnect(child_id)
         self.childsmanager.dropChildByID(child_id)

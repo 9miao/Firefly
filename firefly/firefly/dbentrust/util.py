@@ -240,7 +240,7 @@ def getallkeys(key,mem):
                 except:
                     continue
                 if _key.startswith(key) and not pk.startswith('_'):
-                    nowlist.add(int(pk))
+                    nowlist.add(pk)
             allkeys = allkeys.union(nowlist)
     return allkeys
 

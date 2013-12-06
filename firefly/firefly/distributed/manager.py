@@ -120,5 +120,6 @@ class ChildsManager(object):
         for child in self._childs.values():
             if child._transport.broker.transport.sessionno == session_id:
                 return child
+        return child
 
         

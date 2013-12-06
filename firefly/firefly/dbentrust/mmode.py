@@ -148,7 +148,7 @@ class MAdmin(MemObject):
         self._timeout = timeout
         
     def insert(self):
-        if self._incrkey:
+        if self._incrkey and not self.get("_incrvalue"):
             self._incrvalue = util.GetTableIncrValue(self._name)
         MemObject.insert(self)
         
