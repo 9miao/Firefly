@@ -10,7 +10,7 @@ setup(name='firefly',
 game server framework""",
       classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       keywords='twisted pb memcached',
-      author='Lan Jinmin',
+      author='lanjinmin',
       author_email='zhuiming.mu@gmail.com',
       url='9miao.com',
       license='firefly',
@@ -22,7 +22,10 @@ game server framework""",
           # -*- Extra requirements: -*-
 		  "twisted",
 		  "zope.interface",
-		  
+		  "DBUtils",
+		  "affinity",
+		  "python-memcached",
+		  "MySQL-python"
       ],
       entry_points="""
       # -*- Entry points: -*-
