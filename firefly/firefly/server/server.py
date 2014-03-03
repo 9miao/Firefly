@@ -109,7 +109,8 @@ class FFServer:
         if app:
             __import__(app)
         if mreload:
-            GlobalObject().reloadmodule = __import__(mreload)
+            _path_list = mreload.split(".")
+            GlobalObject().reloadmodule = __import__(mreload,fromlist=_path_list[:1])
         GlobalObject().remote_connect = self.remote_connect
         import admin
         
