@@ -1,16 +1,17 @@
-.. firefly-twisted documentation master file, created by
-   sphinx-quickstart on Tue Jul 29 11:56:48 2014.
+.. firefly documentation master file, created by
+   sphinx-quickstart on Tue Jul 29 12:35:24 2014.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to firefly-twisted's documentation!
-===========================================
+Welcome to firefly's documentation!
+===================================
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
+   firefly
 
 
 Indices and tables
