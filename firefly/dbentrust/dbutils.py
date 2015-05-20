@@ -696,5 +696,4 @@ class SQLProducer:
 sqlproducer = SQLProducer()
 
 
-print sqlproducer.delete("tb_item", where="id=123")
     
